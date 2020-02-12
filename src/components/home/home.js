@@ -1,13 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import {SearchBar} from 'component/searchbar/searchbar'
+import SearchBar from '../searchbar/searchbar';
 
-function Home(props) {
+function Home() {
     return (
-            <Router>
-                <SearchBar />
-                <Route exact path="/page" component={PageInfo} />
-            </Router>
+            <SearchBar />
     );
 }
 

@@ -1,15 +1,8 @@
-import axios from 'axios';
-
+import myData from '../sample.json';
 class MainService {
-    getList() {
-        return axios
-            .get(GospopService.baseURL + 'global/sports', {
-                headers: {
-                    Authorization: AuthService.getAuthId(),
-                },
-            })
-            .then(response => response.data)
-            .catch(error => error);
+    async getList() {
+        
+        return await Object.values(myData);
     }
 }
 

@@ -4,25 +4,62 @@ import './searchbar.scss';
 
 function SearchBar(){
     const [query, setQuery] = useState('');
-    const [results, setResults] = useState([]);
+    const [results, setResults] = useState();
+
+    useEffect(() => { 
+
+      setResults(getInfo());
+    },[]); 
 
      useEffect(() => {
         if (query && query > 1) {
             if (query % 2 === 0) {
-              getInfo()
+              console.log(search());
+               
             }
           }
       });
 
 function getInfo() {
-    mainService.getList(query).then(result => {
-        getRecomended();
-        setResults([result]);
-    })
-    
+    const listReturn = mainService.getList()
+    .then(response => {
+        console.log(response);
+
+        // const ListResponse = response.map(item=>{
+        //   return{
+        //         fullname: item.first_name + " " + item.last_name,
+        //         score: item.score
+        //       }
+        return response
+        })
+        // const ListResponse = Object.values(response).map(item =>{
+        //   return{
+        //     fullname: item.first_name + " " + item.last_name,
+        //     score: item.score
+        //   }
+        // })
+        // getRecomended();
+        // let arr = Array.from(ListResponse)
+        // setResults(results => ({...results, ListResponse}))
+        // setResults(results => results.concat(ListResponse))
+        // setResults(results.concat(result));
+    // })
+    return listReturn;
 }
 
-function getRecomended(){
+function search() {
+  let filtered = Object.values(results).filter(item => query.includes(item));
+  // forEach(response, function(item) {
+  //   if (item.toLowerCase().indexOf(query) !== -1) {
+  //     filtered.push(item);
+  //   }
+  // });
+  console.log(filtered);
+  
+  return filtered;
+// }
+
+// function getRecomended(){
 
 }
 
@@ -31,10 +68,9 @@ return (
       <input
         className="search-bar-input"
         placeholder="Search"
-        ref={input => this.search = input}
-        onChange={() => setQuery(this.search)}
+        onChange={ event => setQuery(event.target.value)}
       />
-      <p>{results}</p>
+<p></p>
     </form>
   );
 }
