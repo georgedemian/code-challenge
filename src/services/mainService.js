@@ -1,8 +1,15 @@
-import myData from '../sample.json';
+
 class MainService {
-    async getList() {
-        
-        return await Object.values(myData);
+    async getList() { 
+       const response = await fetch('/sample.json', {
+            headers : { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+               }
+        })
+        const json = await response.json();
+
+        return json
     }
 }
 

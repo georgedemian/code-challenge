@@ -1,15 +1,37 @@
+input:focus{
+    outline: none;
+}
 .search-bar{
     box-sizing: border-box;
     display: block;
     margin: 0 auto;
-    max-width: 600px;
+    margin-top: 3em;
+    max-width: 1200px;
     min-width: 300px;
+    text-align: center;
     width: 50%;
 
     .search-bar-input{
         border: 1px solid black;
         border-radius: 2px;
         box-sizing: border-box;
+        display: block;
+        margin: 0 auto;
         padding: 1em;
+        width: 90%;
+    }
+    .search-results{
+        display: block;
+        text-align: left;
+        width: 90%;
+        margin: 0 auto;
+        .option{
+            cursor: pointer;
+            margin: 0;
+            padding: 12px;
+            &:hover {
+                background-color: #F5F5F5;
+            }
+        }
     }
 }

@@ -5,72 +5,62 @@ import './searchbar.scss';
 function SearchBar(){
     const [query, setQuery] = useState('');
     const [results, setResults] = useState();
+    const [searchR, setSearchR] = useState(['']);
 
     useEffect(() => { 
-
-      setResults(getInfo());
+      getInfo();
     },[]); 
 
      useEffect(() => {
-        if (query && query > 1) {
-            if (query % 2 === 0) {
-              console.log(search());
-               
-            }
-          }
-      });
+       if (query.length > 0) {
+        setSearchR(search());
+       } else{
+         setSearchR([''])
+       }
+      },[query]);
 
 function getInfo() {
-    const listReturn = mainService.getList()
+    mainService.getList()
     .then(response => {
-        console.log(response);
-
-        // const ListResponse = response.map(item=>{
-        //   return{
-        //         fullname: item.first_name + " " + item.last_name,
-        //         score: item.score
-        //       }
-        return response
+        const formated = response.map(item => ({fullname: item.first_name + " " + item.last_name, score: item.score} ))
+        setResults(formated)
         })
-        // const ListResponse = Object.values(response).map(item =>{
-        //   return{
-        //     fullname: item.first_name + " " + item.last_name,
-        //     score: item.score
-        //   }
-        // })
-        // getRecomended();
-        // let arr = Array.from(ListResponse)
-        // setResults(results => ({...results, ListResponse}))
-        // setResults(results => results.concat(ListResponse))
-        // setResults(results.concat(result));
-    // })
-    return listReturn;
 }
 
 function search() {
-  let filtered = Object.values(results).filter(item => query.includes(item));
-  // forEach(response, function(item) {
-  //   if (item.toLowerCase().indexOf(query) !== -1) {
-  //     filtered.push(item);
-  //   }
-  // });
-  console.log(filtered);
+  let filtered =  results.filter((item) => 
+    {return item.fullname.toLowerCase().includes(query)}
+    );
+  filtered.sort((a, b) => parseFloat(b.score) - parseFloat(a.score));
+  return filtered ;
+}
+
+function hightlight(option){
+  if (option) {
+    const matchStart = option.toLowerCase().indexOf(query.toLowerCase());
+    const matchEnd = matchStart + query.length - 1;
+    const beforeMatch = option.slice(0, matchStart);
+    const matchText = option.slice(matchStart, matchEnd + 1);
+    const afterMatch = option.slice(matchEnd + 1);
+       return <span  key={option} tabIndex={1} >
+           {beforeMatch}<strong>{matchText}</strong>{afterMatch}
+       </span>
+  }
   
-  return filtered;
-// }
-
-// function getRecomended(){
-
+  
 }
 
 return (
     <form className="search-bar">
+      <h2>Get a look:</h2>
       <input
         className="search-bar-input"
         placeholder="Search"
         onChange={ event => setQuery(event.target.value)}
       />
-<p></p>
+    <div className="search-results">
+      {searchR.length ? searchR.map((item, i) =>  <p className="option" key={i}>{hightlight(item.fullname)}</p>): null}
+    </div>
     </form>
   );
 }
