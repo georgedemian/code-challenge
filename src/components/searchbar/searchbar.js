@@ -1,5 +1,6 @@
 import React, { useState, useEffect  } from 'react'
 import mainService from '../../services/mainService';
+import './searchbar.scss';
 
 function SearchBar(){
     const [query, setQuery] = useState('');
@@ -15,14 +16,20 @@ function SearchBar(){
 
 function getInfo() {
     mainService.getList(query).then(result => {
-
+        getRecomended();
+        setResults([result]);
     })
-     setResults(['si']);
+    
+}
+
+function getRecomended(){
+
 }
 
 return (
-    <form>
+    <form className="search-bar">
       <input
+        className="search-bar-input"
         placeholder="Search"
         ref={input => this.search = input}
         onChange={() => setQuery(this.search)}
